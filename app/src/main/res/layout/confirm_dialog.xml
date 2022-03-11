@@ -2,63 +2,61 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/custom_textbox_view">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancel2_btn"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/custom_cancel_btn_view"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/delete_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_tv" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/delete_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/custom_comfirm2_btn_view"
-        android:text="Delete"
-        android:textColor="@color/white"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cancel2_btn"
-        app:layout_constraintTop_toBottomOf="@+id/description_tv" />
-
-    <TextView
-        android:id="@+id/title5_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Confirm Delete"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/custom_textbox_view"
+        android:padding="24dp">
 
-    <TextView
-        android:id="@+id/description_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title5_tv" />
+        <TextView
+            android:id="@+id/title2_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="確認刪除"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/message_tv"
+            android:layout_marginTop="24dp"
+            android:text="textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cancel2_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/custom_cancel_btn_view"
+                android:layout_weight="1"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/confirm2_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="刪除"
+                android:textColor="@color/white"
+                android:background="@drawable/custom_comfirm2_btn_view"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

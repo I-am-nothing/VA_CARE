@@ -7,92 +7,85 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.xdd.covid_19information2.adapter.tempurate.Temperature
 import java.lang.Exception
 
-class BodyLogHelper private constructor(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-    override fun onCreate(db: SQLiteDatabase?) {
-        val createTemperatureTable = "CREATE TABLE $TABLE_TEMPERATURE($KEY_DATETIME VARCHAR(30) PRIMARY KEY, $KEY_TEMPERATURE FLOAT NOT NULL)"
+class BodyLogHelper private constructor(context: Context): SQLiteOpenHelper(context, "Covid19", null, 1){
+    companion object{
+        private var sInstance: BodyLogHelper? = null
 
-        db?.execSQL(createTemperatureTable)
-    }
-
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_TEMPERATURE")
-        onCreate(db)
-    }
-
-    fun addTemperature(body: Body): Long{
-        val db = this.writableDatabase
-        val contentValues = ContentValues().apply {
-            put(KEY_DATETIME, body.datetime)
-            put(KEY_TEMPERATURE, body.temperature)
+        fun getInstance(context: Context): BodyLogHelper{
+            if(sInstance == null){
+                sInstance = BodyLogHelper(context.applicationContext)
+            }
+            return sInstance!!
         }
-        val success = db.insert(TABLE_TEMPERATURE, null, contentValues)
-        db.close()
-
-        return success
     }
 
-    fun getAllTemperature(): List<Body>{
-        val db = this.readableDatabase
-        val arrayList = ArrayList<Body>()
-        val selectQuery = "SELECT * FROM $TABLE_TEMPERATURE ORDER BY $KEY_DATETIME DESC"
+    override fun onCreate(p0: SQLiteDatabase?) {
+        p0?.execSQL("CREATE TABLE Temperature (Id INTEGER PRIMARY KEY AUTOINCREMENT, Datetime VARCHAR(30) NOT NULL, Temperature FLOAT NOT NULL)")
+    }
 
-        val cursor = db.rawQuery(selectQuery, null)
+    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
+        p0?.execSQL("DROP TABLE IF EXISTS Temperature")
+        onCreate(p0)
+    }
+
+    fun getTemperatures(): ArrayList<Temperature>{
+        val db = readableDatabase
+        val arrayList = ArrayList<Temperature>()
+        val command = "SELECT * FROM Temperature ORDER BY Id DESC"
+
+        val cursor = db.rawQuery(command, null)
 
         if(cursor.moveToFirst()){
             do{
-                val dateTime = cursor.getString(0)
-                val temperature = cursor.getFloat(1)
-                arrayList.add(Body(dateTime, temperature))
-            } while (cursor.moveToNext())
+                arrayList.add(Temperature(cursor.getInt(0), cursor.getString(1), cursor.getFloat(2)))
+            }
+            while (cursor.moveToNext())
         }
+
         cursor.close()
 
         return arrayList
     }
 
-    fun updateTemperature(body: Body, datetimeLast: String): Int{
-        val db = this.writableDatabase
+    fun addTemperature(temperature: Temperature): Long{
+        val db = writableDatabase
         val contentValues = ContentValues().apply {
-            put(KEY_DATETIME, body.datetime)
-            put(KEY_TEMPERATURE, body.temperature)
+            putNull("Id")
+            put("Datetime", temperature.datetime)
+            put("Temperature", temperature.temperature)
         }
+        val result = db.insert("Temperature", null, contentValues)
 
-        val success = db?.update(TABLE_TEMPERATURE, contentValues, "$KEY_DATETIME=$datetimeLast", null)
         db.close()
 
-        return success!!
+        return result
     }
 
-    fun deleteEmployee(body: Body): Int{
-        val db = this.writableDatabase
+    fun updateTemperature(temperature: Temperature): Int{
+        val db = writableDatabase
         val contentValues = ContentValues().apply {
-            put(KEY_DATETIME, body.datetime)
-            put(KEY_TEMPERATURE, body.temperature)
+            put("Id", temperature.id)
+            put("Datetime", temperature.datetime)
+            put("Temperature", temperature.temperature)
         }
 
-        val success = db.delete(TABLE_TEMPERATURE, "$KEY_DATETIME='${body.datetime}'", null)
+        val result = db.update("Temperature", contentValues, "Id = ${temperature.id}", null)
+
         db.close()
 
-        return success
+        return result
     }
 
-    companion object{
-        private const val DATABASE_VERSION = 2
-        private const val DATABASE_NAME = "BodyTemperatureDb"
-        private const val TABLE_TEMPERATURE = "TemperatureLog"
-        private const val KEY_DATETIME = "Datetime"
-        private const val KEY_TEMPERATURE = "Temperature"
+    fun deleteTemperature(temperature: Temperature): Int{
+        val db = writableDatabase
 
-        private var sInstance: BodyLogHelper? = null
+        val result = db.delete("Temperature", "Id = ${temperature.id}", null)
 
-        @Synchronized
-        fun getInstance(context: Context): BodyLogHelper? {
-            if (sInstance == null) {
-                sInstance = BodyLogHelper(context.applicationContext)
-            }
-            return sInstance
-        }
+        db.close()
+
+        return result
     }
 }
