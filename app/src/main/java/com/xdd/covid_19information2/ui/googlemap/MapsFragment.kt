@@ -110,15 +110,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             dialog.show()
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-            binding.title5Tv.text = "Confirm Location"
-            binding.deleteBtn.text = "Confirm"
-            binding.descriptionTv.text = "Are you sure choosing ${vaccineLocation.getJSONObject(position).getString("Name")}"
+            binding.title2Tv.text = "Confirm Location"
+            binding.confirm2Btn.text = "Confirm"
+            binding.messageTv.text = "Are you sure choosing ${vaccineLocation.getJSONObject(position).getString("Name")}"
 
             binding.cancel2Btn.setOnClickListener {
                 dialog.dismiss()
             }
 
-            binding.deleteBtn.setOnClickListener {
+            binding.confirm2Btn.setOnClickListener {
                 dialog.dismiss()
                 Navigation.findNavController(requireView()).apply {
                     previousBackStackEntry?.savedStateHandle?.set("VaccineLocation", vaccineLocation.getJSONObject(position).toString())
