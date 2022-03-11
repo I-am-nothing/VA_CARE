@@ -154,6 +154,19 @@ class Covid19Information(private val activity: Activity?) {
         }
     }
 
+    fun getCovidImage(id: String, result: (String?) -> Unit){
+        Log.e("FUCK", "In")
+        httpGet("/information/covid19/$id"){
+            if(it == null){
+                result(null)
+            }
+            else{
+                Log.e("FUCK", it.toString())
+                result(it.getJSONArray("message").getJSONObject(0).getString("Image"))
+            }
+        }
+    }
+
     fun register(email: String, password: String, identityId: String, name: String, phone: String, address: String, result:(String?) -> Unit){
         Log.e("XDD", address)
         val body = JSONObject()
@@ -264,7 +277,7 @@ class Covid19Information(private val activity: Activity?) {
             try {
                 with(URL(hostUrl + path).openConnection() as HttpURLConnection){
                     requestMethod = "GET"
-                    readTimeout = 3000
+                    readTimeout = 5000
                     BufferedReader(InputStreamReader(inputStream)).use {
                         val response = StringBuffer()
 
@@ -282,9 +295,9 @@ class Covid19Information(private val activity: Activity?) {
             }
             catch (e: Exception){
                 Log.e("XDD", e.message.toString())
-                activity!!.runOnUiThread {
-                    Toast.makeText(activity.applicationContext, e.message, Toast.LENGTH_SHORT).show()
-                }
+                //activity!!.runOnUiThread {
+                    //Toast.makeText(activity.applicationContext, e.message, Toast.LENGTH_SHORT).show()
+               // }
                 result(null)
             }
         }.start()

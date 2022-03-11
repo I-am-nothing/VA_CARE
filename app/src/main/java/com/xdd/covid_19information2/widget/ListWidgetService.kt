@@ -40,7 +40,7 @@ class ListWidgetService: RemoteViewsService() {
                         }
                         val decodeImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size, options)
                         val date = it.getJSONObject(i)["Date"].toString()
-                        arrayList.add(CovidInformation(date.substring(0, date.indexOf('T') - 1), it.getJSONObject(i)["Message"].toString(), decodeImage, it.getJSONObject(i)["InformationId"].toString()))
+                        //arrayList.add(CovidInformation(date.substring(0, date.indexOf('T') - 1), it.getJSONObject(i)["Message"].toString(), decodeImage, it.getJSONObject(i)["InformationId"].toString()))
                     }
                     statusOk = true
                 }

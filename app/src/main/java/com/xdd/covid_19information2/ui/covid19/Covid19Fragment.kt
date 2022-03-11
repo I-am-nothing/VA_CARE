@@ -70,7 +70,7 @@ class Covid19Fragment : Fragment() {
                         requireActivity().runOnUiThread{
                             binding.headTv.text = i.title
                             binding.headDate.text = i.datetime
-                            binding.headImg.setImageBitmap(i.image)
+                            //binding.headImg.setImageBitmap(i.image)
                         }
                         Thread.sleep(5000)
                     }
@@ -82,14 +82,8 @@ class Covid19Fragment : Fragment() {
             if(it != null){
                 val arrayList = ArrayList<CovidInformation>()
                 for(i in 0 until it.length()){
-                    val imageBytes = Base64.decode(it.getJSONObject(i)["Image"].toString(), Base64.DEFAULT)
-                    val options = BitmapFactory.Options().apply {
-                        inSampleSize = 3
-                        inJustDecodeBounds = false
-                    }
-                    val decodeImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size, options)
                     val date = it.getJSONObject(i)["Date"].toString()
-                    arrayList.add(CovidInformation(date.substring(0, date.indexOf('T') - 1), it.getJSONObject(i)["Message"].toString(), decodeImage, it.getJSONObject(i)["InformationId"].toString()))
+                    arrayList.add(CovidInformation(date.substring(0, date.indexOf('T') - 1), it.getJSONObject(i)["Message"].toString(), it.getJSONObject(i)["InformationId"].toString()))
                 }
 
                 viewModel.setCovidInformation(arrayList)

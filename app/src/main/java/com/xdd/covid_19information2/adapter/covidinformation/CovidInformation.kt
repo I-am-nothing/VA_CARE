@@ -6,6 +6,6 @@ import org.w3c.dom.DOMStringList
 class CovidInformation(
     var datetime: String,
     var title: String,
-    var image: Bitmap?,
-    var informationId: String
+    var informationId: String,
+    var image: Bitmap? = null
 )
